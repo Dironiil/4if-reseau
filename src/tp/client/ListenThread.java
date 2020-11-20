@@ -1,9 +1,8 @@
 package tp.client;
 
-import tp.data.Message;
-
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 class ListenThread extends Thread {
@@ -16,15 +15,13 @@ class ListenThread extends Thread {
 
     @Override
     public void run() {
-        try (ObjectInputStream socIn = new ObjectInputStream(listenSocket.getInputStream())) {
-            Message msg = (Message) socIn.readObject();
+        try (BufferedReader socIn = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()))) {
+            String msg = socIn.readLine();
             while (msg != null) {
                 System.out.println(msg);
-                msg = (Message) socIn.readObject();
+                msg = socIn.readLine();
             }
         } catch (IOException ignored) {
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } finally {
             System.out.println("Chat closed");
         }

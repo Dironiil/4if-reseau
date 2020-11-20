@@ -1,19 +1,19 @@
 package tp.server;
 
-import tp.data.Message;
-import tp.data.ServerMessage;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Map;
 
 class ClientThread extends Thread {
 
-    private final Map<Socket, ObjectOutputStream> allClientsOutputStream;
+    private final Map<Socket, PrintStream> allClientsOutputStream;
     private final Socket clientSocket;
     private final String clientName;
 
-    public ClientThread(Socket clientSocket, Map<Socket, ObjectOutputStream> allClientsOutputStream) {
+    public ClientThread(Socket clientSocket, Map<Socket, PrintStream> allClientsOutputStream) {
         this.allClientsOutputStream = allClientsOutputStream;
         this.clientSocket = clientSocket;
         this.clientName = clientSocket.getInetAddress().toString();
@@ -21,28 +21,17 @@ class ClientThread extends Thread {
 
     @Override
     public void run() {
-        try (ObjectInputStream socIn = new ObjectInputStream(clientSocket.getInputStream())) {
+        try (BufferedReader socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
             boolean quit = false;
             while (!quit) {
-                Message msg = (Message) socIn.readObject();
+                String msg = socIn.readLine();
                 if (msg == null) {
-                    System.out.println("[CLOSED/WARNING] Connection from " + clientName + " forcefully closed (null)");
                     quit = true;
                 } else {
-                    switch (msg.getMetadata()) {
-                        case RENAME -> {
-                            msg = new ServerMessage(msg.getUser() + " s'est renommé " + msg.getContent(), msg.getTimestamp());
-                        }
-                        case QUIT -> {
-                            quit = true;
-                            allClientsOutputStream.remove(clientSocket);
-                            msg = new ServerMessage(msg.getUser() + " a quitté le chat.", msg.getTimestamp());
-                        }
-                    }
                     System.out.println("\t[" + clientName + "] " + msg);
                     synchronized (allClientsOutputStream) {
-                        for (ObjectOutputStream socOut : allClientsOutputStream.values()) {
-                            socOut.writeObject(msg);
+                        for (PrintStream socOut : allClientsOutputStream.values()) {
+                            socOut.println(msg);
                         }
                     }
                 }
@@ -50,8 +39,6 @@ class ClientThread extends Thread {
             System.out.println("[CLOSED] Connection from " + clientName + " closed.");
         } catch (IOException e) {
             System.out.println("[CLOSED/WARNING] Connection from " + clientName + " forcefully closed (IOException).");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } finally {
             try {
                 clientSocket.close();

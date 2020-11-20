@@ -1,11 +1,13 @@
 package tp.client;
 
-import tp.data.Message;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Client {
 
@@ -17,11 +19,12 @@ public class Client {
     public Client(String host, int port) {
         this.host = host;
         this.port = port;
+        this.pseudo = "Anonymous";
     }
 
     public void start() {
         try (Socket commSocket = new Socket(host, port);
-             ObjectOutputStream socOut = new ObjectOutputStream(commSocket.getOutputStream());
+             PrintStream socOut = new PrintStream(commSocket.getOutputStream());
              BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))
         ) {
             // creation socket ==> connexion
@@ -30,17 +33,18 @@ public class Client {
             String line = "";
             while (line != null && !"/quit".equalsIgnoreCase(line)) {
                 line = stdIn.readLine();
-                Message toSend;
+                String toSend;
+                String time = DateTimeFormatter.ofPattern("h:m:s").format(LocalTime.now());
                 if (line == null || line.equalsIgnoreCase("/quit")) {
-                    toSend = new Message(pseudo, line, LocalTime.now(), Message.Metadata.QUIT);
+                    toSend = "[" + time + "] " + pseudo + " a quitté le chat.";
                 } else if (line.matches("^/rename .*$")) {
                     String newPseudo = line.split(" ")[1];
-                    toSend = new Message(pseudo, newPseudo, LocalTime.now(), Message.Metadata.RENAME);
+                    toSend = "[" + time + "] " + pseudo + " s'est renommé " + newPseudo;
                     pseudo = newPseudo;
                 } else {
-                    toSend = new Message(pseudo, line, LocalTime.now(), Message.Metadata.TEXT);
+                    toSend = "<[" + time + "] " + pseudo + "> " + line;
                 }
-                socOut.writeObject(toSend);
+                socOut.println(toSend);
             }
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: " + host);
