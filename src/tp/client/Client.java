@@ -30,6 +30,8 @@ public class Client {
             // creation socket ==> connexion
             ListenThread listenThread = new ListenThread(commSocket);
             listenThread.start();
+
+            socOut.println("[" + DateTimeFormatter.ofPattern("h:m:s").format(LocalTime.now()) + "] " + pseudo + " a rejoint le chat.");
             String line = "";
             while (line != null && !"/quit".equalsIgnoreCase(line)) {
                 line = stdIn.readLine();
@@ -39,7 +41,7 @@ public class Client {
                     toSend = "[" + time + "] " + pseudo + " a quitté le chat.";
                 } else if (line.matches("^/rename .*$")) {
                     String newPseudo = line.split(" ")[1];
-                    toSend = "[" + time + "] " + pseudo + " s'est renommé " + newPseudo;
+                    toSend = "[" + time + "] " + pseudo + " s'est renommé " + newPseudo + ".";
                     pseudo = newPseudo;
                 } else {
                     toSend = "<[" + time + "] " + pseudo + "> " + line;

@@ -12,11 +12,15 @@ class ClientThread extends Thread {
     private final Map<Socket, PrintStream> allClientsOutputStream;
     private final Socket clientSocket;
     private final String clientName;
+    private final StringBuilder history;
 
-    public ClientThread(Socket clientSocket, Map<Socket, PrintStream> allClientsOutputStream) {
+    public ClientThread(Socket clientSocket, Map<Socket, PrintStream> allClientsOutputStream, StringBuilder history) {
         this.allClientsOutputStream = allClientsOutputStream;
         this.clientSocket = clientSocket;
         this.clientName = clientSocket.getInetAddress().toString();
+        this.history = history;
+
+        allClientsOutputStream.get(clientSocket).println(history.toString());
     }
 
     @Override
@@ -29,6 +33,7 @@ class ClientThread extends Thread {
                     quit = true;
                 } else {
                     System.out.println("\t[" + clientName + "] " + msg);
+                    history.append(msg).append("\n");
                     synchronized (allClientsOutputStream) {
                         for (PrintStream socOut : allClientsOutputStream.values()) {
                             socOut.println(msg);
