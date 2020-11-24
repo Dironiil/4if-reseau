@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class ServerControlThread extends Thread {
         } catch (SocketException e) {
             System.out.println("Server closed.");
         } catch (IOException e) {
-            System.err.println("Internel server error, see stack trace :");
+            System.err.println("Internet server error, see stack trace :");
             e.printStackTrace();
         } finally {
             try {

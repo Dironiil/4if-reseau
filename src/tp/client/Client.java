@@ -1,70 +1,114 @@
 package tp.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
 
-public class Client {
+public class Client implements Closeable {
+
+    /* ATTRIBUTES */
+
+    private boolean closed;
+    private Socket socket;
+    private PrintStream socOut;
+    private Consumer<String> onReceiveAction;
 
     private final String host;
     private final int port;
 
     private String pseudo;
 
-    public Client(String host, int port) {
+    /* CONSTRUCTORS */
+
+    public Client(String host, int port, Consumer<String> onReceiveAction) {
         this.host = host;
         this.port = port;
+        this.closed = true;
+
+        this.onReceiveAction = onReceiveAction;
+
         this.pseudo = "Anonymous";
     }
 
-    public void start() {
-        try (Socket commSocket = new Socket(host, port);
-             PrintStream socOut = new PrintStream(commSocket.getOutputStream());
-             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))
-        ) {
+    /* PUBLIC METHODS */
+
+    public void start() throws IOException{
+        try {
+            socket = new Socket(host, port);
+            socOut = new PrintStream(socket.getOutputStream());
+
             // creation socket ==> connexion
-            ListenThread listenThread = new ListenThread(commSocket);
+            ListenThread listenThread = new ListenThread(socket, this::receiveMessage);
             listenThread.start();
 
-            socOut.println("[" + DateTimeFormatter.ofPattern("h:m:s").format(LocalTime.now()) + "] " + pseudo + " a rejoint le chat.");
-            String line = "";
-            while (line != null && !"/quit".equalsIgnoreCase(line)) {
-                line = stdIn.readLine();
-                String toSend;
-                String time = DateTimeFormatter.ofPattern("h:m:s").format(LocalTime.now());
-                if (line == null || line.equalsIgnoreCase("/quit")) {
-                    toSend = "[" + time + "] " + pseudo + " a quitté le chat.";
-                } else if (line.matches("^/rename .*$")) {
-                    String newPseudo = line.split(" ")[1];
-                    toSend = "[" + time + "] " + pseudo + " s'est renommé " + newPseudo + ".";
-                    pseudo = newPseudo;
-                } else {
-                    toSend = "<[" + time + "] " + pseudo + "> " + line;
-                }
-                socOut.println(toSend);
-            }
+            socOut.println(formatMessage(pseudo + " a rejoint le chat."));
+
+            this.closed = false;
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: " + host);
-            System.exit(2);
+            throw new UnknownHostException("Don't know about host: " + host);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to: " + host);
-            System.exit(3);
+            throw new IOException("Couldn't get I/O for the connection to: " + host);
         }
     }
 
-    /* MAIN METHOD */
-
-    public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage: java Client <host> <port>");
-            System.exit(1);
+    public void sendMessage(String message) throws IOException {
+        if (closed) {
+            throw new IOException("Can't send message if the connection is closed.");
         }
-        new Client(args[0], Integer.parseInt(args[1])).start();
+        if (!socket.isConnected()) {
+            this.close();
+            throw new IOException("Connection unexpectedly closed.");
+        }
+
+        String toSend;
+        if (message.matches("^/rename .*$")) {
+            String newPseudo = message.split(" ")[1];
+            toSend = formatMessage(pseudo + " s'est renommé " + newPseudo + ".");
+            pseudo = newPseudo;
+        } else {
+            toSend = formatMessage(message, true);
+        }
+
+        socOut.println(toSend);
+    }
+
+    public void receiveMessage(String message) {
+        onReceiveAction.accept(message);
+    }
+
+    public void close() throws IOException {
+        if (!closed) {
+            socOut.println(formatMessage(pseudo + " a quitté le chat."));
+            socOut.close();
+            socket.close();
+        } else {
+            System.err.println("Tried to close an already closed Client");
+        }
+        closed = true;
+    }
+
+    /* PRIVATE UTILITIES METHODS */
+
+    private String formatMessage(String message) {
+        return formatMessage(message, false);
+    }
+
+    private String formatMessage(String message, boolean withPseudo) {
+        String time = DateTimeFormatter.ofPattern("H:m:s").format(LocalTime.now());
+        StringBuilder formatted = new StringBuilder();
+
+        if (withPseudo) {
+            formatted.append("<b>&lt;<i>[").append(time).append("]</i> ").append(pseudo).append("&gt;</b> ").append(message);
+        } else {
+            formatted.append("<b>&lt;<i>[").append(time).append("]</i>&gt; ").append(message).append("</b>");
+        }
+
+        return formatted.toString();
     }
 
 }
