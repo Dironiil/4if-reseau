@@ -1,12 +1,9 @@
-package tp.ihm;
+package tcp.ihm;
 
-import tp.client.Client;
-import tp.utils.ActionFunction;
+import tcp.client.Client;
+import tcp.utils.ActionFunction;
 
 import javax.swing.*;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

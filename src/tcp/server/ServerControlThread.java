@@ -1,4 +1,4 @@
-package tp.server;
+package tcp.server;
 
 import java.io.*;
 import java.net.ServerSocket;

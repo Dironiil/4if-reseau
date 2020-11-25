@@ -1,4 +1,4 @@
-package tp.client;
+package tcp.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
