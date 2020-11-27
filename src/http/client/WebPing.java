@@ -3,6 +3,10 @@ package http.client;
 import java.net.InetAddress;
 import java.net.Socket;
 
+/**
+ * Classe WebPing fournie sur Moodle (mais pas utilisée dans notre application).
+ */
+@Deprecated
 public class WebPing {
     public static void main(String[] args) {
 
