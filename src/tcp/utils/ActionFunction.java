@@ -1,7 +1,7 @@
 package tcp.utils;
 
 /**
- * Interface functionnelle représentant une action ne prenant pas de paramètre ni ne renvoyant de valeur.
+ * Interface functionnelle representant une action ne prenant pas de parametre ni ne renvoyant de valeur.
  */
 @FunctionalInterface
 public interface ActionFunction {

@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 /**
- * Classe implémentant la partie purement fonctionnelle d'un Client de chat, en utilisant le protocole TCP.
+ * Classe implementant la partie purement fonctionnelle d'un Client de chat, en utilisant le protocole TCP.
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -30,11 +30,11 @@ public class Client implements Closeable {
     /* CONSTRUCTORS */
 
     /**
-     * Construit un client se connectant à l'hôte et au port donné en paramètre, et exécutant l'action donnée en
-     * paramètre lorsqu'il reçoit un message.
+     * Construit un client se connectant a l'hôte et au port donne en parametre, et executant l'action donnee en
+     * parametre lorsqu'il reçoit un message.
      * @param host L'hôte auquel se connecter.
      * @param port Le port sur lequel se connecter.
-     * @param onReceiveAction L'action à exécuter avec un message reçu.
+     * @param onReceiveAction L'action a executer avec un message reçu.
      */
     public Client(String host, int port, Consumer<String> onReceiveAction) {
         this.host = host;
@@ -49,7 +49,7 @@ public class Client implements Closeable {
     /* PUBLIC METHODS */
 
     /**
-     * Lance le client (càd. le connecte et commence à écouter et envoyer des messages).
+     * Lance le client (cad. le connecte et commence a ecouter et envoyer des messages).
      * @throws IOException En cas d'erreur lors de la connexion.
      */
     public void start() throws IOException {
@@ -74,9 +74,9 @@ public class Client implements Closeable {
     }
 
     /**
-     * Envoie le message passé en paramètre au reste du chat.
-     * @param message Le message à envoyer.
-     * @throws IOException Si le client est fermé ou si une erreur de connexion arrive.
+     * Envoie le message passe en parametre au reste du chat.
+     * @param message Le message a envoyer.
+     * @throws IOException Si le client est ferme ou si une erreur de connexion arrive.
      */
     public void sendMessage(String message) throws IOException {
         if (closed) {
@@ -90,7 +90,7 @@ public class Client implements Closeable {
         String toSend;
         if (message.matches("^/rename .*$")) {
             String newPseudo = message.split(" ")[1];
-            toSend = formatMessage(pseudo + " s'est renommé " + newPseudo + ".");
+            toSend = formatMessage(pseudo + " s'est renomme " + newPseudo + ".");
             pseudo = newPseudo;
         } else {
             toSend = formatMessage(message, true);
@@ -100,7 +100,7 @@ public class Client implements Closeable {
     }
 
     /**
-     * Effectue l'action appropriée avec un message reçu.
+     * Effectue l'action appropriee avec un message reçu.
      * @param message Le message reçu.
      */
     public void receiveMessage(String message) {
@@ -108,12 +108,12 @@ public class Client implements Closeable {
     }
 
     /**
-     * Ferme le client s'il était ouvert.
+     * Ferme le client s'il etait ouvert.
      * @throws IOException Si une erreur arrive lors de la fermeture.
      */
     public void close() throws IOException {
         if (!closed) {
-            socOut.println(formatMessage(pseudo + " a quitté le chat."));
+            socOut.println(formatMessage(pseudo + " a quitte le chat."));
             socOut.close();
             socket.close();
         } else {
@@ -125,20 +125,20 @@ public class Client implements Closeable {
     /* PRIVATE UTILITIES METHODS */
 
     /**
-     * Formate un message selon {@link #formatMessage(String, boolean)}, avec le paramètre withPseudo = false.
-     * @param message Le message à formater.
-     * @return Le message formaté.
+     * Formate un message selon {@link #formatMessage(String, boolean)}, avec le parametre withPseudo = false.
+     * @param message Le message a formater.
+     * @return Le message formate.
      */
     private String formatMessage(String message) {
         return formatMessage(message, false);
     }
 
     /**
-     * Formate un message passé en paramètre, selon deux formats possibles : en affichant ou non le pseudo dans
-     * l'en-tête du message.
-     * @param message Le message à formatter.
-     * @param withPseudo Faut-il afficher le pseudo dans l'en-tête du message ?
-     * @return Le message formatté.
+     * Formate un message passe en parametre, selon deux formats possibles : en affichant ou non le pseudo dans
+     * l'en-tete du message.
+     * @param message Le message a formatter.
+     * @param withPseudo Faut-il afficher le pseudo dans l'en-tete du message ?
+     * @return Le message formatte.
      */
     private String formatMessage(String message, boolean withPseudo) {
         String time = DateTimeFormatter.ofPattern("H:m:s").format(LocalTime.now());

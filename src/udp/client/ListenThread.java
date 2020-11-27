@@ -8,8 +8,8 @@ import java.net.SocketTimeoutException;
 import java.util.function.Consumer;
 
 /**
- * Classe implémentant un thread d'écoute d'un client de chat utilisant UDP multicast, permettant de recevoir et
- * d'afficher des messages envoyés au groupe de multicast.
+ * Classe implementant un thread d'ecoute d'un client de chat utilisant UDP multicast, permettant de recevoir et
+ * d'afficher des messages envoyes au groupe de multicast.
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -22,10 +22,10 @@ public class ListenThread extends Thread {
     private boolean closed;
 
     /**
-     * Crée un thread d'écoute sur le socket passé en paramètre, effectuant l'action passée en paramètre lorsqu'il
+     * Cree un thread d'ecoute sur le socket passe en parametre, effectuant l'action passee en parametre lorsqu'il
      * reçoit un message.
-     * @param multiSocket Socket sur lequel écouter l'arrivée de message.
-     * @param onReceiveAction L'action à effectuer avec un message reçu.
+     * @param multiSocket Socket sur lequel ecouter l'arrivee de message.
+     * @param onReceiveAction L'action a effectuer avec un message reçu.
      */
     public ListenThread(MulticastSocket multiSocket, Consumer<String> onReceiveAction) throws IOException {
         this.multiSocket = multiSocket;
@@ -36,7 +36,7 @@ public class ListenThread extends Thread {
     }
 
     /**
-     * Lance le thread d'écoute du chat. Il tournera jusqu'à ce que le thread ait reçu une demande de fermeture.
+     * Lance le thread d'ecoute du chat. Il tournera jusqu'a ce que le thread ait reçu une demande de fermeture.
      */
     @Override
     public void run() {
@@ -61,7 +61,7 @@ public class ListenThread extends Thread {
     }
 
     /**
-     * Demande au thread de cesser son activité. Cette fermeture peut prendre quelques secondes à être prise en compte.
+     * Demande au thread de cesser son activite. Cette fermeture peut prendre quelques secondes a etre prise en compte.
      */
     public void close() {
         closed = true;

@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Classe centrale d'un serveur de chat en ligne, elle implémente le Thread de contrôle du-dit serveur. Ce thread reçoit
- * les nouvelles connexions client et les gère pour les ajouter au chat.
+ * Classe centrale d'un serveur de chat en ligne, elle implemente le Thread de contrôle du-dit serveur. Ce thread reçoit
+ * les nouvelles connexions client et les gere pour les ajouter au chat.
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -24,9 +24,9 @@ public class ServerControlThread extends Thread {
     private static final File historyFile = new File("history.txt");
 
     /**
-     * Crée le thread de contrôle d'un serveur de chat TCP.
-     * @param port Le port sur lequel le thread devra écouter les connections.
-     * @throws IOException S'il y a une erreur à l'initialisation du socket d'écoute.
+     * Cree le thread de contrôle d'un serveur de chat TCP.
+     * @param port Le port sur lequel le thread devra ecouter les connections.
+     * @throws IOException S'il y a une erreur a l'initialisation du socket d'ecoute.
      */
     public ServerControlThread(int port) throws IOException {
         listenSocket = new ServerSocket(port);
@@ -39,7 +39,7 @@ public class ServerControlThread extends Thread {
     }
 
     /**
-     * Lance le thread de contrôle d'un serveur de chat, écoutant et gérant les connexions client sur le port passé au
+     * Lance le thread de contrôle d'un serveur de chat, ecoutant et gerant les connexions client sur le port passe au
      * constructeur de cet objet.
      */
     @Override

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Classe principale représentant un serveur d'un système de chat en ligne.
+ * Classe principale representant un serveur d'un systeme de chat en ligne.
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 public class Server {
 
     /**
-     * Méthode main lançant un serveur de chat.
+     * Methode main lançant un serveur de chat.
      * @param args Doit contenir un seul argument : le port de lancement.
      */
     public static void main(String[] args) {

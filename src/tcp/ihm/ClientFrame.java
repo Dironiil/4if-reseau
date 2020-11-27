@@ -10,8 +10,8 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 /**
- * Classe IHM principale du client de chat TCP, elle représente la fenêtre du client. Elle contient de plus une méthode
- * {@link #main(String[])} permettant de lancer cette fenêtre.
+ * Classe IHM principale du client de chat TCP, elle represente la fenetre du client. Elle contient de plus une methode
+ * {@link #main(String[])} permettant de lancer cette fenetre.
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -44,7 +44,7 @@ public class ClientFrame extends JFrame {
     /* INITIALIZATION */
 
     /**
-     * Crée une fenêtre de chat se connectant à l'hôte et au port indiqué.
+     * Cree une fenetre de chat se connectant a l'hôte et au port indique.
      * @param host L'hôte auquel se connecter.
      * @param port Le port sur lequel se connecter.
      */
@@ -172,8 +172,8 @@ public class ClientFrame extends JFrame {
     /* MAIN METHOD */
 
     /**
-     * Lance le programme (lance une fenêtre avec les paramètres d'hôte et de port passés en ligne de commande).
-     * @param args Les paramètres en ligne de commande.
+     * Lance le programme (lance une fenetre avec les parametres d'hôte et de port passes en ligne de commande).
+     * @param args Les parametres en ligne de commande.
      */
     public static void main(String[] args) {
         if (args.length != 2) {

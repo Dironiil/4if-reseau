@@ -12,8 +12,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Classe implémentant un Client de chat, en utilisant le protocole UDP multicast (via un groupe). Elle contient de plus
- * une méthode {@link #main(String[])} permettant de lancer un client (en console).
+ * Classe implementant un Client de chat, en utilisant le protocole UDP multicast (via un groupe). Elle contient de plus
+ * une methode {@link #main(String[])} permettant de lancer un client (en console).
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -34,7 +34,7 @@ public class Client implements Closeable {
     /* CONSTRUCTORS */
 
     /**
-     * Construit un client se connectant au groupe dont l'adresse et le port sont passés en paramètre.
+     * Construit un client se connectant au groupe dont l'adresse et le port sont passes en parametre.
      * @param groupAddr L'adresse du groupe auquel se connecter.
      * @param groupPort Le port sur lequel se connecter.
      */
@@ -49,7 +49,7 @@ public class Client implements Closeable {
     /* PUBLIC METHODS */
 
     /**
-     * Lance le client (càd. le connecte au groupe et commence à écouter et envoyer des messages).
+     * Lance le client (cad. le connecte au groupe et commence a ecouter et envoyer des messages).
      * @throws IOException En cas d'erreur lors de la connexion.
      */
     public void start() throws IOException {
@@ -63,9 +63,9 @@ public class Client implements Closeable {
     }
 
     /**
-     * Envoie le message passé en paramètre au reste du groupe.
-     * @param message Le message à envoyer.
-     * @throws IOException Si le client est fermé.
+     * Envoie le message passe en parametre au reste du groupe.
+     * @param message Le message a envoyer.
+     * @throws IOException Si le client est ferme.
      */
     public void sendMessage(String message) throws IOException {
         if (closed) {
@@ -75,7 +75,7 @@ public class Client implements Closeable {
         String toSend;
         if (message.matches("^/rename .*$")) {
             String newPseudo = message.split(" ")[1];
-            toSend = formatMessage(pseudo + " s'est renommé " + newPseudo + ".");
+            toSend = formatMessage(pseudo + " s'est renomme " + newPseudo + ".");
             pseudo = newPseudo;
         } else {
             toSend = formatMessage(message, true);
@@ -94,12 +94,12 @@ public class Client implements Closeable {
     }
 
     /**
-     * Ferme le client s'il était ouvert.
+     * Ferme le client s'il etait ouvert.
      * @throws IOException Si une erreur arrive lors de la fermeture.
      */
     public void close() throws IOException {
         if (!closed) {
-            this.sendMessage(pseudo + " a quitté le chat.");
+            this.sendMessage(pseudo + " a quitte le chat.");
             listenThread.close();
             multiSocket.leaveGroup(groupAddr);
         } else {
@@ -111,20 +111,20 @@ public class Client implements Closeable {
     /* PRIVATE UTILITIES METHODS */
 
     /**
-     * Formate un message selon {@link #formatMessage(String, boolean)}, avec le paramètre withPseudo = false.
-     * @param message Le message à formater.
-     * @return Le message formaté.
+     * Formate un message selon {@link #formatMessage(String, boolean)}, avec le parametre withPseudo = false.
+     * @param message Le message a formater.
+     * @return Le message formate.
      */
     private String formatMessage(String message) {
         return formatMessage(message, false);
     }
 
     /**
-     * Formate un message passé en paramètre, selon deux formats possibles : en affichant ou non le pseudo dans
-     * l'en-tête du message.
-     * @param message Le message à formater.
-     * @param withPseudo Faut-il afficher le pseudo dans l'en-tête du message ?
-     * @return Le message formaté.
+     * Formate un message passe en parametre, selon deux formats possibles : en affichant ou non le pseudo dans
+     * l'en-tete du message.
+     * @param message Le message a formater.
+     * @param withPseudo Faut-il afficher le pseudo dans l'en-tete du message ?
+     * @return Le message formate.
      */
     private String formatMessage(String message, boolean withPseudo) {
         String time = DateTimeFormatter.ofPattern("H:m:s").format(LocalTime.now());
@@ -142,7 +142,7 @@ public class Client implements Closeable {
     /* MAIN METHOD */
 
     /**
-     * Méthode main lançant un serveur de chat.
+     * Methode main lançant un serveur de chat.
      * @param args Doit contenir deux arguments : l'adresse et le port du groupe où se connecte le client
      */
     public static void main(String[] args) {

@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.function.Consumer;
 
 /**
- * Classe implémentant un thread d'écoute d'un client de chat utilisant TCP, permettant de recevoir et d'afficher des
+ * Classe implementant un thread d'ecoute d'un client de chat utilisant TCP, permettant de recevoir et d'afficher des
  * messages.
  *
  * @author Guillaume Berthomet
@@ -19,10 +19,10 @@ class ListenThread extends Thread {
     private final Consumer<String> onReceiveAction;
 
     /**
-     * Crée un thread d'écoute sur le socket passé en paramètre, effectuant l'action passée en paramètre lorsqu'il
+     * Cree un thread d'ecoute sur le socket passe en parametre, effectuant l'action passee en parametre lorsqu'il
      * reçoit un message.
-     * @param listenSocket Socket sur lequel écouter l'arrivée de message.
-     * @param onReceiveAction L'action à effectuer avec un message reçu.
+     * @param listenSocket Socket sur lequel ecouter l'arrivee de message.
+     * @param onReceiveAction L'action a effectuer avec un message reçu.
      */
     public ListenThread(Socket listenSocket, Consumer<String> onReceiveAction) {
         this.listenSocket = listenSocket;
@@ -30,7 +30,7 @@ class ListenThread extends Thread {
     }
 
     /**
-     * Lance le thread d'écoute du chat. Il tournera jusqu'à ce que le socket passé à son constructeur soit déconnecté.
+     * Lance le thread d'ecoute du chat. Il tournera jusqu'a ce que le socket passe a son constructeur soit deconnecte.
      */
     @Override
     public void run() {

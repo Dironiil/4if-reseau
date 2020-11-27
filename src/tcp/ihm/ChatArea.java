@@ -4,8 +4,8 @@ import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
 /**
- * Classe purement IHM, elle implémente une zone de texte dans laquelle un chat utilisant une représentation HTML peut
- * être correctement représenté et visualisé.
+ * Classe purement IHM, elle implemente une zone de texte dans laquelle un chat utilisant une representation HTML peut
+ * etre correctement represente et visualise.
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -30,8 +30,8 @@ public class ChatArea extends JEditorPane {
     }
 
     /**
-     * Ajoute une ligne à la zone de chat.
-     * @param line La ligne à ajouter.
+     * Ajoute une ligne a la zone de chat.
+     * @param line La ligne a ajouter.
      */
     public void addLine(String line) {
         content += "<p style='color: " + TEXT_COLOR_HEX + "; padding: 0; margin: 0 3px; word-wrap: break-word;'>" +
@@ -41,8 +41,8 @@ public class ChatArea extends JEditorPane {
     }
 
     /**
-     * Ajoute une ligne d'erreur à la zone de chat.
-     * @param error Le contenu de l'erreur à ajouter.
+     * Ajoute une ligne d'erreur a la zone de chat.
+     * @param error Le contenu de l'erreur a ajouter.
      */
     public void addErrorLine(String error) {
         addLine("<span style='color: " + ERROR_COLOR_HEX + "'>" + error + "</span>");

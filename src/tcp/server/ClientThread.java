@@ -8,8 +8,8 @@ import java.net.Socket;
 import java.util.Map;
 
 /**
- * Classe représentant un thread serveur s'occuppant de recevoir les messages d'un client en particulier pour ensuite
- * les traiter (si nécessaire) et les renvoyer à tous les autres clients.
+ * Classe representant un thread serveur s'occuppant de recevoir les messages d'un client en particulier pour ensuite
+ * les traiter (si necessaire) et les renvoyer a tous les autres clients.
  *
  * @author Guillaume Berthomet
  * @author Lola Cremer
@@ -22,9 +22,9 @@ class ClientThread extends Thread {
     private final StringBuilder history;
 
     /**
-     * Crée un thread d'écoute client pour un serveur de chat TCP, utilisant le socket passé en paramètre.
-     * @param clientSocket Le socket connecté au client à écouter.
-     * @param allClientsOutputStream Une map représentant tous les sockets clients et leur printstream associé sur
+     * Cree un thread d'ecoute client pour un serveur de chat TCP, utilisant le socket passe en parametre.
+     * @param clientSocket Le socket connecte au client a ecouter.
+     * @param allClientsOutputStream Une map representant tous les sockets clients et leur printstream associe sur
      *                               lesquels renvoyer un message reçu.
      * @param history L'historique de chat de l'application.
      */
@@ -38,7 +38,7 @@ class ClientThread extends Thread {
     }
 
     /**
-     * Lance le thread client avec les paramètres passés au constructeur.
+     * Lance le thread client avec les parametres passes au constructeur.
      */
     @Override
     public void run() {
