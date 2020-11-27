@@ -18,11 +18,20 @@ class ListenThread extends Thread {
     private final Socket listenSocket;
     private final Consumer<String> onReceiveAction;
 
+    /**
+     * Crée un thread d'écoute sur le socket passé en paramètre, effectuant l'action passée en paramètre lorsqu'il
+     * reçoit un message.
+     * @param listenSocket Socket sur lequel écouter l'arrivée de message.
+     * @param onReceiveAction L'action à effectuer avec un message reçu.
+     */
     public ListenThread(Socket listenSocket, Consumer<String> onReceiveAction) {
         this.listenSocket = listenSocket;
         this.onReceiveAction = onReceiveAction;
     }
 
+    /**
+     * Lance le thread d'écoute du chat. Il tournera jusqu'à ce que le socket passé à son constructeur soit déconnecté.
+     */
     @Override
     public void run() {
         try (BufferedReader socIn = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()))) {

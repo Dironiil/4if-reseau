@@ -17,6 +17,9 @@ public class ChatArea extends JEditorPane {
 
     private String content;
 
+    /**
+     * Construit une zone de chat textuelle HTML.
+     */
     public ChatArea() {
         this.setEditable(false);
         this.setContentType("text/html");
@@ -26,6 +29,10 @@ public class ChatArea extends JEditorPane {
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
 
+    /**
+     * Ajoute une ligne à la zone de chat.
+     * @param line La ligne à ajouter.
+     */
     public void addLine(String line) {
         content += "<p style='color: " + TEXT_COLOR_HEX + "; padding: 0; margin: 0 3px; word-wrap: break-word;'>" +
                 line +
@@ -33,12 +40,12 @@ public class ChatArea extends JEditorPane {
         this.setText(content);
     }
 
+    /**
+     * Ajoute une ligne d'erreur à la zone de chat.
+     * @param error Le contenu de l'erreur à ajouter.
+     */
     public void addErrorLine(String error) {
         addLine("<span style='color: " + ERROR_COLOR_HEX + "'>" + error + "</span>");
-    }
-
-    public String getContentText() {
-        return content;
     }
 
 }

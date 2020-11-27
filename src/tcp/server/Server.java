@@ -12,6 +12,10 @@ import java.io.InputStreamReader;
  */
 public class Server {
 
+    /**
+     * Méthode main lançant un serveur de chat.
+     * @param args Doit contenir un seul argument : le port de lancement.
+     */
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Usage: java Server <port>");

@@ -23,6 +23,11 @@ public class ServerControlThread extends Thread {
     private final StringBuilder history = new StringBuilder();
     private static final File historyFile = new File("history.txt");
 
+    /**
+     * Crée le thread de contrôle d'un serveur de chat TCP.
+     * @param port Le port sur lequel le thread devra écouter les connections.
+     * @throws IOException S'il y a une erreur à l'initialisation du socket d'écoute.
+     */
     public ServerControlThread(int port) throws IOException {
         listenSocket = new ServerSocket(port);
 

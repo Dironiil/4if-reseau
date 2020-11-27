@@ -43,6 +43,11 @@ public class ClientFrame extends JFrame {
 
     /* INITIALIZATION */
 
+    /**
+     * Crée une fenêtre de chat se connectant à l'hôte et au port indiqué.
+     * @param host L'hôte auquel se connecter.
+     * @param port Le port sur lequel se connecter.
+     */
     public ClientFrame(String host, int port) {
         this.setTitle("Messagerie 4IF");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -64,6 +69,9 @@ public class ClientFrame extends JFrame {
         }
     }
 
+    /**
+     * Initialise les composants visuels et fonctionnels de l'application.
+     */
     private void initComponents() {
         /* Graphic initialization */
 
@@ -163,6 +171,10 @@ public class ClientFrame extends JFrame {
 
     /* MAIN METHOD */
 
+    /**
+     * Lance le programme (lance une fenêtre avec les paramètres d'hôte et de port passés en ligne de commande).
+     * @param args Les paramètres en ligne de commande.
+     */
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: java ClientFrame <host> <port>");

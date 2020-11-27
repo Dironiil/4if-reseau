@@ -21,6 +21,13 @@ class ClientThread extends Thread {
     private final String clientName;
     private final StringBuilder history;
 
+    /**
+     * Crée un thread d'écoute client pour un serveur de chat TCP, utilisant le socket passé en paramètre.
+     * @param clientSocket Le socket connecté au client à écouter.
+     * @param allClientsOutputStream Une map représentant tous les sockets clients et leur printstream associé sur
+     *                               lesquels renvoyer un message reçu.
+     * @param history L'historique de chat de l'application.
+     */
     public ClientThread(Socket clientSocket, Map<Socket, PrintStream> allClientsOutputStream, StringBuilder history) {
         this.allClientsOutputStream = allClientsOutputStream;
         this.clientSocket = clientSocket;
@@ -30,6 +37,9 @@ class ClientThread extends Thread {
         allClientsOutputStream.get(clientSocket).println(history.toString());
     }
 
+    /**
+     * Lance le thread client avec les paramètres passés au constructeur.
+     */
     @Override
     public void run() {
         try (BufferedReader socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
