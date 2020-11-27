@@ -126,8 +126,8 @@ public class Client implements Closeable {
 
     /**
      * Formate un message selon {@link #formatMessage(String, boolean)}, avec le paramètre withPseudo = false.
-     * @param message Le message à formatter.
-     * @return Le message formatté.
+     * @param message Le message à formater.
+     * @return Le message formaté.
      */
     private String formatMessage(String message) {
         return formatMessage(message, false);

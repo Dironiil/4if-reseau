@@ -33,6 +33,11 @@ public class Client implements Closeable {
 
     /* CONSTRUCTORS */
 
+    /**
+     * Construit un client se connectant au groupe dont l'adresse et le port sont passés en paramètre.
+     * @param groupAddr L'adresse du groupe auquel se connecter.
+     * @param groupPort Le port sur lequel se connecter.
+     */
     public Client(InetAddress groupAddr, int groupPort) {
         this.groupAddr = groupAddr;
         this.groupPort = groupPort;
@@ -43,6 +48,10 @@ public class Client implements Closeable {
 
     /* PUBLIC METHODS */
 
+    /**
+     * Lance le client (càd. le connecte au groupe et commence à écouter et envoyer des messages).
+     * @throws IOException En cas d'erreur lors de la connexion.
+     */
     public void start() throws IOException {
         multiSocket = new MulticastSocket(groupPort);
         multiSocket.joinGroup(groupAddr);
@@ -53,6 +62,11 @@ public class Client implements Closeable {
         this.closed = false;
     }
 
+    /**
+     * Envoie le message passé en paramètre au reste du groupe.
+     * @param message Le message à envoyer.
+     * @throws IOException Si le client est fermé.
+     */
     public void sendMessage(String message) throws IOException {
         if (closed) {
             throw new IOException("Can't send message if the connection is closed.");
@@ -71,10 +85,18 @@ public class Client implements Closeable {
         multiSocket.send(packet);
     }
 
+    /**
+     * Affiche le message reçu.
+     * @param message Le message reçu.
+     */
     public void receiveMessage(String message) {
         System.out.println(message);
     }
 
+    /**
+     * Ferme le client s'il était ouvert.
+     * @throws IOException Si une erreur arrive lors de la fermeture.
+     */
     public void close() throws IOException {
         if (!closed) {
             this.sendMessage(pseudo + " a quitté le chat.");
@@ -88,10 +110,22 @@ public class Client implements Closeable {
 
     /* PRIVATE UTILITIES METHODS */
 
+    /**
+     * Formate un message selon {@link #formatMessage(String, boolean)}, avec le paramètre withPseudo = false.
+     * @param message Le message à formater.
+     * @return Le message formaté.
+     */
     private String formatMessage(String message) {
         return formatMessage(message, false);
     }
 
+    /**
+     * Formate un message passé en paramètre, selon deux formats possibles : en affichant ou non le pseudo dans
+     * l'en-tête du message.
+     * @param message Le message à formater.
+     * @param withPseudo Faut-il afficher le pseudo dans l'en-tête du message ?
+     * @return Le message formaté.
+     */
     private String formatMessage(String message, boolean withPseudo) {
         String time = DateTimeFormatter.ofPattern("H:m:s").format(LocalTime.now());
         StringBuilder formatted = new StringBuilder();
@@ -107,6 +141,10 @@ public class Client implements Closeable {
 
     /* MAIN METHOD */
 
+    /**
+     * Méthode main lançant un serveur de chat.
+     * @param args Doit contenir deux arguments : l'adresse et le port du groupe où se connecte le client
+     */
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage : java Client <group address> <group port>");
