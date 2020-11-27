@@ -21,6 +21,12 @@ public class ListenThread extends Thread {
 
     private boolean closed;
 
+    /**
+     * Crée un thread d'écoute sur le socket passé en paramètre, effectuant l'action passée en paramètre lorsqu'il
+     * reçoit un message.
+     * @param multiSocket Socket sur lequel écouter l'arrivée de message.
+     * @param onReceiveAction L'action à effectuer avec un message reçu.
+     */
     public ListenThread(MulticastSocket multiSocket, Consumer<String> onReceiveAction) throws IOException {
         this.multiSocket = multiSocket;
         multiSocket.setSoTimeout(3000);
@@ -29,6 +35,9 @@ public class ListenThread extends Thread {
         this.closed = true;
     }
 
+    /**
+     * Lance le thread d'écoute du chat. Il tournera jusqu'à ce que le thread ait reçu une demande de fermeture.
+     */
     @Override
     public void run() {
         closed = false;
@@ -51,6 +60,9 @@ public class ListenThread extends Thread {
         }
     }
 
+    /**
+     * Demande au thread de cesser son activité. Cette fermeture peut prendre quelques secondes à être prise en compte.
+     */
     public void close() {
         closed = true;
     }

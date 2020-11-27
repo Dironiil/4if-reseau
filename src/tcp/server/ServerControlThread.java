@@ -38,6 +38,10 @@ public class ServerControlThread extends Thread {
         }
     }
 
+    /**
+     * Lance le thread de contrôle d'un serveur de chat, écoutant et gérant les connexions client sur le port passé au
+     * constructeur de cet objet.
+     */
     @Override
     public void run() {
         try {
