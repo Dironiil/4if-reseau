@@ -4,6 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Classe principale représentant un serveur d'un système de chat en ligne.
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 public class Server {
 
     public static void main(String[] args) {

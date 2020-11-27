@@ -7,6 +7,12 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
+/**
+ * Classe implémentant la partie purement fonctionnelle d'un Client de chat, en utilisant le protocole TCP.
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 public class Client implements Closeable {
 
     /* ATTRIBUTES */

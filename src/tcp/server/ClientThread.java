@@ -7,6 +7,13 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Map;
 
+/**
+ * Classe représentant un thread serveur s'occuppant de recevoir les messages d'un client en particulier pour ensuite
+ * les traiter (si nécessaire) et les renvoyer à tous les autres clients.
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 class ClientThread extends Thread {
 
     private final Map<Socket, PrintStream> allClientsOutputStream;

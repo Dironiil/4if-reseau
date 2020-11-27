@@ -9,6 +9,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+/**
+ * Classe IHM principale du client de chat TCP, elle représente la fenêtre du client. Elle contient de plus une méthode
+ * {@link #main(String[])} permettant de lancer cette fenêtre.
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 public class ClientFrame extends JFrame {
 
     /* COLORS CONSTANT */

@@ -11,6 +11,13 @@ import java.net.UnknownHostException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Classe implémentant un Client de chat, en utilisant le protocole UDP multicast (via un groupe). Elle contient de plus
+ * une méthode {@link #main(String[])} permettant de lancer un client (en console).
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 public class Client implements Closeable {
 
     /* ATTRIBUTES */

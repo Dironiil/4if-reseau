@@ -7,6 +7,13 @@ import java.net.MulticastSocket;
 import java.net.SocketTimeoutException;
 import java.util.function.Consumer;
 
+/**
+ * Classe implémentant un thread d'écoute d'un client de chat utilisant UDP multicast, permettant de recevoir et
+ * d'afficher des messages envoyés au groupe de multicast.
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 public class ListenThread extends Thread {
 
     private final MulticastSocket multiSocket;

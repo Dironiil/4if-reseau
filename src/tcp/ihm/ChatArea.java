@@ -3,6 +3,13 @@ package tcp.ihm;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
+/**
+ * Classe purement IHM, elle implémente une zone de texte dans laquelle un chat utilisant une représentation HTML peut
+ * être correctement représenté et visualisé.
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 public class ChatArea extends JEditorPane {
 
     private static final String TEXT_COLOR_HEX = "#E0E0E0";

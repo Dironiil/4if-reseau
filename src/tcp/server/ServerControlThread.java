@@ -8,6 +8,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe centrale d'un serveur de chat en ligne, elle implémente le Thread de contrôle du-dit serveur. Ce thread reçoit
+ * les nouvelles connexions client et les gère pour les ajouter au chat.
+ *
+ * @author Guillaume Berthomet
+ * @author Lola Cremer
+ */
 public class ServerControlThread extends Thread {
 
     private ServerSocket listenSocket;

@@ -49,13 +49,27 @@ public class WebServer {
         return new Response(header.toString(), content);
     }
 
-    private Response constructGenericHTMLResponse(String responseCode, String content) {
-        return constructGenericResponse(responseCode, content.getBytes(), "Content-Type: text/html");
+    /**
+     * Construit une réponse HTTP contenant du HTML à partir de deux paramètres : le statut de la réponse et son
+     * contenu.
+     * @param responseType La première ligne du header de la réponse.
+     * @param content Le contenu de la réponse.
+     * @return La réponse construite avec le bon header et le contenu passé en paramètre.
+     * @see #constructGenericResponse(String, byte[], String[])
+     */
+    private Response constructGenericHTMLResponse(String responseType, String content) {
+        return constructGenericResponse(responseType, content.getBytes(), "Content-Type: text/html");
     }
 
     // - Good (2XX)
 
-    // 200
+    /**
+     * Construit une réponse HTTP 200 (OK) avec le type MIME et le contenu passé en paramètre, indiquant que tout s'est
+     * bien passé.
+     * @param contentType Le type MIME du contenu.
+     * @param content Le contenu de la réponse.
+     * @return La réponse construite.
+     */
     private Response constructOKResponse(String contentType, byte[] content) {
         return constructGenericResponse(
                 "HTTP/1.0 200 OK",
@@ -64,7 +78,11 @@ public class WebServer {
         );
     }
 
-    // 201
+    /**
+     * Construit une réponse HTTP 201 (CREATED), indiquant que la ressource au chemin passé en paramètre a été crée.
+     * @param resource Le chemin vers la ressource créée.
+     * @return La réponse construite.
+     */
     private Response constructCreatedResponse(String resource) {
         return constructGenericResponse(
                 "HTTP/1.0 201 CREATED",
@@ -73,7 +91,11 @@ public class WebServer {
         );
     }
 
-    // 204
+    /**
+     * Construit une réponse HTTP 204 (NO CONTENT), indiquant que tout s'est bien passé sans nécessité d'informations
+     * supplémentaires ou de corps de réponse.
+     * @return La réponse construite.
+     */
     private Response constructOKNoContentResponse() {
         return constructGenericResponse(
                 "HTTP/1.0 204 NO CONTENT",
@@ -83,7 +105,10 @@ public class WebServer {
 
     // - External errors (4XX)
 
-    // 400
+    /**
+     * Construit une réponse HTTP 400 (BAD REQUEST), indiquant une requête mal formée ou à la demande impossible.
+     * @return La réponse construite.
+     */
     private Response constructBadRequestResponse() {
         return constructGenericHTMLResponse(
                 "HTTP/1.0 400 BAD REQUEST",
@@ -91,7 +116,12 @@ public class WebServer {
         );
     }
 
-    // 403
+    /**
+     * Construit une réponse HTTP 403 (FORBIDDEN), indiquant que l'accès à la ressource passée en paramètre est
+     * impossible et/ou interdit.
+     * @param resource Le chemin vers la ressource impossible d'accès.
+     * @return La réponse construite.
+     */
     private Response constructForbiddenResponse(String resource) {
         return constructGenericHTMLResponse(
                 "HTTP/1.0 403 FORBIDDEN",
@@ -99,7 +129,12 @@ public class WebServer {
         );
     }
 
-    // 404
+    /**
+     * Construit une réponse HTTP 404 (NOT FOUND), indiquant que la ressource passée en paramètre n'existe pas pour
+     * le serveur.
+     * @param resource Le chemin vers la ressource inexistante.
+     * @return La réponse construite.
+     */
     private Response constructNotFoundResponse(String resource) {
         return constructGenericHTMLResponse(
                 "HTTP/1.0 404 NOT FOUND",
@@ -107,7 +142,12 @@ public class WebServer {
         );
     }
 
-    // 406
+    /**
+     * Construit une réponse HTTP 406 (NOT ACCEPTABLE), indiquant qu'une méthode n'est pas applicable à une ressource.
+     * @param method La méthode dont l'application est impossible.
+     * @param resource La ressource sur laquelle la méthode est inapplicable.
+     * @return La réponse construite.
+     */
     private Response constructNotAcceptableResponse(String method, String resource) {
         return constructGenericHTMLResponse(
                 "HTTP/1.0 406 NOT ACCEPTABLE",
@@ -117,7 +157,11 @@ public class WebServer {
 
     // - Internal errors (5XX)
 
-    // 500
+    /**
+     * Construit une réponse HTTP 500 (INTERNAL SERVER ERROR), indiquant qu'une erreur interne au serveur est arrivé.
+     * @param message Le message d'erreur à afficher.
+     * @return La réponse construite.
+     */
     private Response constructInternalErrorResponse(String message) {
         return constructGenericHTMLResponse(
                 "HTTP/1.0 500 INTERNAL SERVER ERROR",
@@ -125,7 +169,11 @@ public class WebServer {
         );
     }
 
-    // 501
+    /**
+     * Construit une réponse HTTP 501, indiquant que la méthode HTTP demandée n'est pas implémentée sur ce serveur.
+     * @param method La méthode non-implémentée.
+     * @return La réponse construite.
+     */
     private Response constructNotImplementedResponse(String method) {
         return constructGenericHTMLResponse(
                 "HTTP/1.0 501 NOT IMPLEMENTED",
@@ -135,6 +183,13 @@ public class WebServer {
 
     // #-- Handling different HTTP methods
 
+    /**
+     * Implémentation de la méthode HTTP get, allant chercher le contenu d'un fichier pour le renvoyer.
+     * @param in Le contenu complet de la requête.
+     * @return La réponse à renvoyer au client.
+     * @throws IOException En cas ou d'erreur de lecture du contenu de la requête, ou d'erreur de manipulation du
+     * fichier.
+     */
     private Response get(BufferedReader in) throws IOException {
         // Extract important headers info
         String[] requestArgs = in.readLine().split(" ");
@@ -160,6 +215,15 @@ public class WebServer {
         return constructOKResponse(Files.probeContentType(fullPath), content);
     }
 
+    /**
+     * Implémentation de la méthode HTTP POST. Note implémentation est simpliste, car elle permet simplement d'ajouter à
+     * la fin d'un fichier le contenu passé en corps de requête (ou de créer le fichier avec ce contenu s'il n'existe
+     * pas déjà).
+     * @param in Le contenu complet de la requête.
+     * @return La réponse à renvoyer au client.
+     * @throws IOException En cas ou d'erreur de lecture du contenu de la requête, ou d'erreur de manipulation du
+     * fichier.
+     */
     private Response post(BufferedReader in) throws IOException {
         // Extract important headers info
         String[] requestArgs = in.readLine().split(" ");
@@ -206,6 +270,14 @@ public class WebServer {
         }
     }
 
+    /**
+     * Implémentation de la méthode HTTP HEAD, renvoyant la même en-tête qu'une méthode GET appelée sur la même
+     * ressource, sans le contenu d'une telle réponse.
+     * @param in Le contenu complet de la requête.
+     * @return La réponse à renvoyer au client.
+     * @throws IOException En cas ou d'erreur de lecture du contenu de la requête, ou d'erreur de manipulation du
+     * fichier.
+     */
     private Response head(BufferedReader in) throws IOException {
         // Extract important headers info
         String[] requestArgs = in.readLine().split(" ");
@@ -234,6 +306,14 @@ public class WebServer {
         return response;
     }
 
+    /**
+     * Implémentation de la méthode HTTP PUT, permettant de remplacer le contenu d'un fichier avec le contenu de la
+     * requête (ou de créer le fichier s'il n'existe pas).
+     * @param in Le contenu complet de la requête.
+     * @return La réponse à renvoyer au client.
+     * @throws IOException En cas ou d'erreur de lecture du contenu de la requête, ou d'erreur de manipulation du
+     * fichier.
+     */
     private Response put(BufferedReader in) throws IOException {
         // Extract important headers info
         String[] requestArgs = in.readLine().split(" ");
@@ -277,6 +357,13 @@ public class WebServer {
         }
     }
 
+    /**
+     * Implémentation de la méthode HTTP DELETE, permettant de supprimer une ressource (si elle peut être supprimée).
+     * @param in Le contenu complet de la requête.
+     * @return La réponse à renvoyer au client.
+     * @throws IOException En cas ou d'erreur de lecture du contenu de la requête, ou d'erreur de manipulation du
+     * fichier.
+     */
     private Response delete(BufferedReader in) throws IOException {
         // Extract important headers info
         String[] requestArgs = in.readLine().split(" ");
@@ -306,10 +393,19 @@ public class WebServer {
         return constructOKNoContentResponse();
     }
 
+    /**
+     * Renvoie une réponse BAD REQUEST entiérement construite.
+     * @return Une réponse BAD REQUEST.
+     */
     private Response badRequest() {
         return constructBadRequestResponse();
     }
 
+    /**
+     * Renvoie une réponse NOT IMPLEMENTED indiquant que la méthode HTTP passée en paramètre n'est pas implémentée.
+     * @param method La méthode HTTP non implémentée.
+     * @return Une réponse NOT IMPLEMENTED.
+     */
     private Response notImplemented(String method) {
         return constructNotImplementedResponse(method);
     }
